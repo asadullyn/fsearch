@@ -1,0 +1,9 @@
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\bin\Debug\fsearch.exe.config
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\bin\Debug\fsearch.exe
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\bin\Debug\fsearch.pdb
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\obj\Debug\fsearch.csprojResolveAssemblyReference.cache
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\obj\Debug\fsearch.Properties.Resources.resources
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\obj\Debug\fsearch.csproj.GenerateResource.Cache
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\obj\Debug\fsearch.exe
+c:\users\администратор\documents\visual studio 2013\Projects\fsearch\fsearch\obj\Debug\fsearch.pdb
+C:\Users\Администратор\Documents\Visual Studio 2013\Projects\fsearch\fsearch\obj\Debug\fsearch.MainForm.resources
