@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace fsearch
 {
@@ -19,6 +21,96 @@ namespace fsearch
             InitializeComponent();
         }
 
+        private const string FormSaveFile = "fsf.bin";
+
+        [Serializable()]    
+        private class FormFiels
+        {
+            private string dname;
+            private string fnamepattern = "";
+            private string hastext = "";
+
+            public string DirName
+            {
+                get 
+                { 
+                    return dname; 
+                }
+
+                set
+                {
+                    dname = value;
+                }
+            }
+
+            public string NameTemplate
+            {
+                get
+                {
+                    return fnamepattern;
+                }
+
+                set
+                {
+                    fnamepattern = value;
+                }
+            }
+
+            public string HasText
+            {
+                get
+                {
+                    return hastext;
+                }
+
+                set
+                {
+                    hastext = value;
+                }
+            }
+        }
+
+        private void saveForm(){
+
+            FormFiels ff = new FormFiels();
+            ff.DirName = this.startDir.Text;
+            ff.NameTemplate = this.fnamePattern.Text;
+            ff.HasText = this.hasText.Text;
+
+            Stream fsfs = File.Create(FormSaveFile);
+            BinaryFormatter serializer = new BinaryFormatter();
+            try
+            {
+                serializer.Serialize(fsfs, ff);
+            }
+            catch (SerializationException se)
+            {
+
+            }
+            fsfs.Close();
+        }
+
+        private void readForm()
+        {
+            FormFiels ff = new FormFiels();
+            if (File.Exists(FormSaveFile))
+            {
+                Stream fsfs = File.OpenRead(FormSaveFile);
+                BinaryFormatter deserializer = new BinaryFormatter();
+                try
+                {
+                    ff = (FormFiels)deserializer.Deserialize(fsfs);
+                }
+                catch (SerializationException se)
+                {
+
+                }
+                fsfs.Close();
+                this.startDir.Text = ff.DirName;
+                this.fnamePattern.Text = ff.NameTemplate;
+                this.hasText.Text = ff.HasText;
+            }
+        }
 
         private void startDirOpen_Click(object sender, EventArgs e)
         {
@@ -139,22 +231,22 @@ namespace fsearch
                 }
             }
 
-            try
-            {
+            
                 foreach (string dirs in Directory.GetDirectories(basedir))
                 {
-                    SearchFiles(w, e, dirs, patt, text);
-                }
-            }
-            catch (IOException ex)
-            {
+                    try
+                    {
+                        SearchFiles(w, e, dirs, patt, text);
+                    }
+                    catch (IOException ex)
+                    {
                 
-            }
-            catch (UnauthorizedAccessException uex)
-            {
+                    }
+                    catch (UnauthorizedAccessException uex)
+                    {
 
-            }
-
+                    }
+                }
         }
 
 
@@ -176,6 +268,7 @@ namespace fsearch
             }
             else
             {
+                saveForm();
                 searchResultBox.Items.Clear();
                 this.searchButton.Enabled = false;
                 this.cancelButton.Enabled = true;
@@ -233,10 +326,43 @@ namespace fsearch
             spenttime.Text = sec.ToString() + " сек.";
         }
 
+        private string getDirName(string file)
+        {
+            int slen = file.Length;
+
+            while(file[slen - 1]!='\\')
+            {
+                slen--;
+            }
+
+            string dirname = file.Substring(0, slen);
+            return dirname;
+        }
+
+        private void showFileLocation(string file)
+        {
+            fileTree.Nodes.Clear();
+            DirectoryInfo dir = new DirectoryInfo(getDirName(file));
+            ScanDir(dir);
+        }
+
         private void searchResultBox_DoubleClick(object sender, EventArgs e)
         {
-            string file = searchResultBox.SelectedItem.ToString();
-            MessageBox.Show(file);
+            try
+            {
+                string file = searchResultBox.SelectedItem.ToString();
+                showFileLocation(file);
+                this.dirName.Text = getDirName(file);
+            }
+            catch (NullReferenceException nre)
+            {
+
+            }
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            readForm();
         }
         
 

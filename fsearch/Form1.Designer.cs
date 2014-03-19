@@ -48,6 +48,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.spenttime = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.dirName = new System.Windows.Forms.Label();
             this.groupBoxSP.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -151,6 +152,7 @@
             // searchResultBox
             // 
             this.searchResultBox.FormattingEnabled = true;
+            this.searchResultBox.HorizontalScrollbar = true;
             this.searchResultBox.Location = new System.Drawing.Point(240, 247);
             this.searchResultBox.Name = "searchResultBox";
             this.searchResultBox.ScrollAlwaysVisible = true;
@@ -222,11 +224,20 @@
             this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // dirName
+            // 
+            this.dirName.AutoSize = true;
+            this.dirName.Location = new System.Drawing.Point(13, 24);
+            this.dirName.Name = "dirName";
+            this.dirName.Size = new System.Drawing.Size(0, 13);
+            this.dirName.TabIndex = 8;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(794, 575);
+            this.Controls.Add(this.dirName);
             this.Controls.Add(this.spenttime);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.filecount);
@@ -241,6 +252,7 @@
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "MainForm";
             this.Text = "Поиск файлов";
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.groupBoxSP.ResumeLayout(false);
             this.groupBoxSP.PerformLayout();
             this.ResumeLayout(false);
@@ -269,6 +281,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label spenttime;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Label dirName;
     }
 }
 
