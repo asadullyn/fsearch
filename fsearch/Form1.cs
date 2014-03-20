@@ -189,7 +189,12 @@ namespace fsearch
                 try
                 {
                     foreach (string files in Directory.GetFiles(basedir, (patt != "") ? patt : "*"))
-                    {   
+                    {
+                        if (w.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            break;
+                        }
 
                         StreamReader str = new StreamReader(files, Encoding.Default);
                         while (!str.EndOfStream)
@@ -226,27 +231,39 @@ namespace fsearch
             {
                 foreach (string files in Directory.GetFileSystemEntries(basedir, (patt!="")?patt:"*" ))
                 {
+                    if (w.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+
                     fcount++;
                     w.ReportProgress(0, files);
                 }
             }
 
             
-                foreach (string dirs in Directory.GetDirectories(basedir))
+            foreach (string dirs in Directory.GetDirectories(basedir))
+            {
+                if (w.CancellationPending)
                 {
-                    try
-                    {
-                        SearchFiles(w, e, dirs, patt, text);
-                    }
-                    catch (IOException ex)
-                    {
-                
-                    }
-                    catch (UnauthorizedAccessException uex)
-                    {
-
-                    }
+                    e.Cancel = true;
+                    break;
                 }
+
+                try
+                {
+                   SearchFiles(w, e, dirs, patt, text);
+                }
+                catch (IOException ex)
+                {
+                
+                }
+                catch (UnauthorizedAccessException uex)
+                {
+
+                }
+            }
         }
 
 
